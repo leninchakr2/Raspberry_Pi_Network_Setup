@@ -28,7 +28,7 @@ SSH Port Modification:
 	1.	First ssh in cmd		(IP_ADDR = Find from Router)
 			ssh pi@IP_ADDR
 			
-				vim /etc/ssh/sshd_config
+				sudo vim /etc/ssh/sshd_config
 					#Port 22	=>	Port 2244
 				sudo service ssh restart
 			
