@@ -1,0 +1,56 @@
+
+Raspberry Pi	(Headless)	:	SSH	+	WIFI	+	SSH Port Modification	+	Static IP
+
+Enale SSH:
+=========
+	1.	Create file	->	Name:ssh	(Extention:none)	{	using VIM editor	}
+	2.	Copy to Memory card
+	
+Enable WIFI:
+===========
+	1.	Create file	->	Name:wpa_supplicant.conf		{	using VIM editor	}
+	2.	Paste following content:
+	
+			ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+			update_config=1
+			country=IN
+
+			network={
+					ssid="SSID_OF_AP"
+					psk="Wifi_Password"
+					key_mgmt=WPA-PSK
+			}
+			
+	3.	Copy to Memory card
+
+SSH Port Modification:
+======================
+	1.	First ssh in cmd		(IP_ADDR = Find from Router)
+			ssh pi@IP_ADDR
+			
+				vim /etc/ssh/sshd_config
+					#Port 22	=>	Port 2244
+				sudo service ssh restart
+			
+	2.	Next ssh in cmd
+			ssh -p 2244 pi@IP_ADDR
+				
+			
+Static IP:
+==========
+	Network		=	wlan0				{	Mostly	}
+	STATIC_IP	=	192.168.1.127		{	Any unallocated IP	}
+	ROUTER_IP	=	192.168.1.1			{	ip r | grep default		=>		ROUTER_IP	}
+	DNS_IP		=	ROUTER_IP			{	Play by replacing 8.200.69.80	}
+
+	sudo vim /etc/dhcpcd.conf
+	
+		Insert following lines at end of the file
+			
+			interface NETWORK
+			static ip_address=STATIC_IP/24
+			static routers=ROUTER_IP
+			static domain_name_servers=DNS_IP
+			
+	sudo reboot
+			
